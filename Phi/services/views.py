@@ -67,6 +67,13 @@ def answer(request):
     return render(request, 'FAQ.html')
 
 
+def gholam(request):
+    notif_id = request.GET['notifID']
+    notif = models.Notification.objects.get(id=notif_id)
+    notif.seen = True
+    notif.save()
+
+
 def get_user_profile(request, username):
     if request.user.is_authenticated():
         # khodesh
@@ -76,10 +83,8 @@ def get_user_profile(request, username):
         member_to_visit = Member.objects.filter(user__username=username)[0]
 
         if request.GET:
-            notif_id = request.GET['notifID']
-            notif = models.Notification.objects.get(id=notif_id)
-            notif.seen = True
-            notif.save()
+            gholam(request)
+
 
         if len(list(member.followees.filter(user__username=username))) == 0:  # he is not following!
             do_i_follow_her = False
@@ -289,10 +294,7 @@ def get_single_post(request, post_id):
         member = Member.objects.get(user=request.user)
 
         if request.GET:
-            notif_id = request.GET['notifID']
-            notif = models.Notification.objects.get(id=notif_id)
-            notif.seen = True
-            notif.save()
+            gholam(request)
 
         post = models.Post.objects.get(id=post_id)
 
