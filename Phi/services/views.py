@@ -336,41 +336,37 @@ def like_unlike(request, post_id):
 def comment(request, post_id):
     if request.user.is_authenticated():
         member = Member.objects.get(user=request.user)
-        if request.method == "GET":
-            comment_text = request.GET.get('comment_text')
-            post_id = request.GET.get('post-id')
+        comment_text = request.GET.get('comment_text')
+        post_id = request.GET.get('post-id')
 
-            if not (comment_text and post_id):
-                return HttpResponse("Not enough information.", status=400)
+        if not (comment_text and post_id):
+            return HttpResponse("Not enough information.", status=400)
 
-            postcomment = models.Comment()
-            postcomment.member = member
-            postcomment.post = models.Post.objects.filter(id=post_id)[0]
-            postcomment.comment_text = comment_text
-            postcomment.datetime = datetime.datetime.now()
-            postcomment.save()
+        postcomment = models.Comment()
+        postcomment.member = member
+        postcomment.post = models.Post.objects.filter(id=post_id)[0]
+        postcomment.comment_text = comment_text
+        postcomment.datetime = datetime.datetime.now()
+        postcomment.save()
 
-            new_notif = models.PostRelatedNotif()
-            new_notif.notif_subject = postcomment.member
-            post_author_id = postcomment.post.member.id
-            new_notif.notif_object = Member.objects.filter(id=post_author_id)[0]
-            new_notif.notif_type = 'comment'
-            new_notif.post = models.Post.objects.get(id=post_id)
-            new_notif.save()
+        new_notif = models.PostRelatedNotif()
+        new_notif.notif_subject = postcomment.member
+        post_author_id = postcomment.post.member.id
+        new_notif.notif_object = Member.objects.filter(id=post_author_id)[0]
+        new_notif.notif_type = 'comment'
+        new_notif.post = models.Post.objects.get(id=post_id)
+        new_notif.save()
 
-            other_comments = models.Comment.objects.filter(post__id=post_id).exclude(member=member)
-            for comment in other_comments:
-                if comment.member != comment.post.member and len(
-                        models.PostRelatedNotif.objects.filter(notif_subject=member, notif_object=comment.member,
-                                                               post__id=post_id, seen=False)) == 0:
-                    comment_notif = models.PostRelatedNotif()
-                    comment_notif.notif_subject = member
-                    comment_notif.notif_object = comment.member
-                    comment_notif.notif_type = 'mozakhraf'
-                    comment_notif.post = comment.post
-                    comment_notif.save()
+        other_comments = models.Comment.objects.filter(post__id=post_id).exclude(member=member)
+        for comment in other_comments:
+            comment_notif = models.PostRelatedNotif()
+            comment_notif.notif_subject = member
+            comment_notif.notif_object = comment.member
+            comment_notif.notif_type = 'mozakhraf'
+            comment_notif.post = comment.post
+            comment_notif.save()
 
-            return HttpResponse(postcomment.datetime, status=200)
+        return HttpResponse(postcomment.datetime, status=200)
     else:
         login_form = MemberLoginForm()
         reg_form = MemberRegModelForm()
