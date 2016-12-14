@@ -5,7 +5,6 @@ from django.db import models, migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('users', '0001_initial'),
     ]
@@ -53,7 +52,8 @@ class Migration(migrations.Migration):
                 ('song_writer', models.CharField(max_length=100)),
                 ('cinematography', models.CharField(max_length=100)),
                 ('running_time', models.PositiveSmallIntegerField()),
-                ('poster_image', models.ImageField(upload_to='media/', null=True, default='media/unknown-movie.png', blank='True')),
+                ('poster_image',
+                 models.ImageField(upload_to='media/', null=True, default='media/unknown-movie.png', blank='True')),
             ],
         ),
         migrations.CreateModel(
@@ -87,7 +87,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PostRelatedNotif',
             fields=[
-                ('notification_ptr', models.OneToOneField(auto_created=True, primary_key=True, to='services.Notification', serialize=False, parent_link=True)),
+                ('notification_ptr',
+                 models.OneToOneField(auto_created=True, primary_key=True, to='services.Notification', serialize=False,
+                                      parent_link=True)),
                 ('post', models.ForeignKey(to='services.Post')),
             ],
             bases=('services.notification',),

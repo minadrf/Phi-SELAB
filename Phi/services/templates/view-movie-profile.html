@@ -11,37 +11,63 @@
         <div class="col-md-12 panel-body">
             <div class="row">
                 <div class="col-md-4 text-center center-block">
-                    <img src="{{ movie.poster_image.url }}/" class="img img-responsive center-block img-rounded" id="poster-img" style="width: 200px; height: 250px" />
+                    <img src="{{ movie.poster_image.url }}/" class="img img-responsive center-block img-rounded"
+                         id="poster-img" style="width: 200px; height: 250px"/>
                 </div>
 
                 <div class="col-md-8">
                     <div class="row">
-                        <h2>{{ movie.name }} <small>{{ movie.year }}</small></h2>
-                        <div class="glyphicon glyphicon-star"></div> Score {{ movie.avg_rate }} out of 10.0
+                        <h2>{{ movie.name }}
+                            <small>{{ movie.year }}</small>
+                        </h2>
+                        <div class="glyphicon glyphicon-star"></div>
+                        Score {{ movie.avg_rate }} out of 10.0
                         <br/>
-                        <div class="glyphicon glyphicon-user"></div> {{ movie.total_raters }} total
+                        <div class="glyphicon glyphicon-user"></div>
+                        {{ movie.total_raters }} total
                     </div>
 
                     <div class="row">
                         <!-- rating -->
                         <div class="dropdown">
-                            <button class="btn btn-info dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                            <button class="btn btn-info dropdown-toggle" type="button" id="menu1"
+                                    data-toggle="dropdown">
                                 Rate this movie
                                 <span class="caret"></span>
                             </button>
                             <ul id="rating" class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button" data-toggle="modal" data-target="#myModal" value="1">★</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button" data-toggle="modal" data-target="#myModal" value="2">★★</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button" data-toggle="modal" data-target="#myModal" value="3">★★★</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button" data-toggle="modal" data-target="#myModal" value="4">★★★★</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button" data-toggle="modal" data-target="#myModal" value="5">★★★★★</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button" data-toggle="modal" data-target="#myModal" value="6">★★★★★★</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button" data-toggle="modal" data-target="#myModal" value="7">★★★★★★★</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button" data-toggle="modal" data-target="#myModal" value="8">★★★★★★★★</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button" data-toggle="modal" data-target="#myModal" value="9">★★★★★★★★★</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button" data-toggle="modal" data-target="#myModal" value="10">★★★★★★★★★★</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button"
+                                                           data-toggle="modal" data-target="#myModal" value="1">★</a>
+                                </li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button"
+                                                           data-toggle="modal" data-target="#myModal" value="2">★★</a>
+                                </li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button"
+                                                           data-toggle="modal" data-target="#myModal" value="3">★★★</a>
+                                </li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button"
+                                                           data-toggle="modal" data-target="#myModal" value="4">★★★★</a>
+                                </li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button"
+                                                           data-toggle="modal" data-target="#myModal"
+                                                           value="5">★★★★★</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button"
+                                                           data-toggle="modal" data-target="#myModal"
+                                                           value="6">★★★★★★</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button"
+                                                           data-toggle="modal" data-target="#myModal"
+                                                           value="7">★★★★★★★</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button"
+                                                           data-toggle="modal" data-target="#myModal"
+                                                           value="8">★★★★★★★★</a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button"
+                                                           data-toggle="modal" data-target="#myModal" value="9">★★★★★★★★★</a>
+                                </li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" type="button"
+                                                           data-toggle="modal" data-target="#myModal" value="10">★★★★★★★★★★</a>
+                                </li>
                             </ul>
-                            <input type="hidden" id="hidden-text" />
+                            <input type="hidden" id="hidden-text"/>
                         </div>
                     </div>
 
@@ -60,7 +86,8 @@
                                     <div class="container-fluid">
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <form role="form" action="/movies/{{ movie.id }}/rate_post/" method="POST">
+                                                <form role="form" action="/movies/{{ movie.id }}/rate_post/"
+                                                      method="POST">
                                                     {% csrf_token %}
                                                     <div class="form-group">
                                                         {% for field in form %}
@@ -71,14 +98,16 @@
 
                                                     <div class="modal-footer">
                                                         <input type="submit" class="btn btn-success" value="Submit"/>
-                                                        <input type="reset" class="btn btn-default" value="Reset" />
-                                                        <input type="submit" class="btn btn-danger" value="Just save the score!" />
-                                                        <input type="hidden" id="rate" name="rate" />
+                                                        <input type="reset" class="btn btn-default" value="Reset"/>
+                                                        <input type="submit" class="btn btn-danger"
+                                                               value="Just save the score!"/>
+                                                        <input type="hidden" id="rate" name="rate"/>
                                                     </div>
                                                 </form>
                                             </div>
 
-                                            <div class="col-md-4"><img src="" class="img img-responsive img-rounded" /></div>
+                                            <div class="col-md-4"><img src="" class="img img-responsive img-rounded"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -86,8 +115,8 @@
                         </div>
                     </div>
 
-                    <hr class="colorgraph" />
-                    <h4><a href="{{ movie.link_to_imdb }}">{{ movie.name }} @ Imdb</a> </h4>
+                    <hr class="colorgraph"/>
+                    <h4><a href="{{ movie.link_to_imdb }}">{{ movie.name }} @ Imdb</a></h4>
                 </div>
             </div>
         </div>
@@ -106,14 +135,30 @@
         </div>
         <div class="col-md-10 col-md-offset-1">
             <ul class="list-group">
-                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Genre: {{ movie.genre }}</li>
-                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Initial release: {{ movie.initial_release }}</li>
-                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Director: {{ movie.director }}</li>
-                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Country: {{ movie.country }}</li>
-                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Written by: {{ movie.author }}</li>
-                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Music by: {{ movie.song_writer }}</li>
-                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Cinematography: {{ movie.cinematography }}</li>
-                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Running time: {{ movie.running_time }} minutes</li>
+                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Genre: {{
+                    movie.genre }}
+                </li>
+                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Initial release: {{
+                    movie.initial_release }}
+                </li>
+                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Director: {{
+                    movie.director }}
+                </li>
+                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Country: {{
+                    movie.country }}
+                </li>
+                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Written by: {{
+                    movie.author }}
+                </li>
+                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Music by: {{
+                    movie.song_writer }}
+                </li>
+                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Cinematography: {{
+                    movie.cinematography }}
+                </li>
+                <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"></span> Running time: {{
+                    movie.running_time }} minutes
+                </li>
             </ul>
         </div>
         <div class="col-md-10 col-md-offset-1">
@@ -121,11 +166,12 @@
             <div class="col-md-3 text-center center-block">
                 <a class="thumbnail" href="">
                     {% if role.actor.actor_image %}
-                    <img class="img-responsive img-thumbnail img-circle" src="{{ role.actor.actor_image.url }}/" />
+                    <img class="img-responsive img-thumbnail img-circle" src="{{ role.actor.actor_image.url }}/"/>
                     {% else %}
-                    <img class="img-responsive img-thumbnail img-circle" src="/media/media/unknown.png" />
+                    <img class="img-responsive img-thumbnail img-circle" src="/media/media/unknown.png"/>
                     {% endif %}
-                    <h6>{{ role.actor.name }}</h6><small>({{ role.role_name }})</small>
+                    <h6>{{ role.actor.name }}</h6>
+                    <small>({{ role.role_name }})</small>
                 </a>
             </div>
             {% endfor %}
