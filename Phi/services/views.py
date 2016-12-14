@@ -434,6 +434,10 @@ def get_movie_profile(request, movie_id):
         })
 
 
+def chert(movie, rate):
+    return round((movie.avg_rate * movie.total_raters + rate) / (movie.total_raters + 1), 1)
+
+
 def rate_post(request, movie_id):
     if request.user.is_authenticated():
         member = Member.objects.get(user=request.user)
@@ -445,7 +449,7 @@ def rate_post(request, movie_id):
                     rate = int(request.POST['rate'])
                     post.rate = rate
                     movie = models.Movie.objects.get(id=int(movie_id))
-                    movie.avg_rate = round((movie.avg_rate * movie.total_raters + rate) / (movie.total_raters + 1), 1)
+                    movie.avg_rate = chert(movie, rate)
                     movie.total_raters = movie.total_raters + 1
                     movie.save()
                     post.datetime = datetime.datetime.now()
@@ -456,7 +460,7 @@ def rate_post(request, movie_id):
                 else:
                     rate = int(request.POST['rate'])
                     movie = models.Movie.objects.get(id=int(movie_id))
-                    movie.avg_rate = round((movie.avg_rate * movie.total_raters + rate) / (movie.total_raters + 1), 1)
+                    movie.avg_rate = chert(movie, rate)
                     movie.total_raters = movie.total_raters + 1
                     movie.save()
                     return HttpResponseRedirect('/movies/' + movie_id + '/')
