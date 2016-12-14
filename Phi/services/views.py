@@ -132,6 +132,18 @@ def get_user_profile(request, username):
             'reg_form': reg_form
         })
 
+def jamile(request, form, memeber, layout):
+    render(request, 'edit-user-profile.html', {
+        'form': form,
+        'member': member,
+        'like_notifs': layout['like_notifs'],
+        'comment_notifs': layout['comment_notifs'],
+        'follow_notifs': layout['follow_notifs'],
+        'mozakhraf_notifs': layout['mozakhraf_notifs'],
+        'notif_num': layout['notif_num'],
+        'recmovies': layout['recmovies'],
+        'recusers': layout['recusers']
+    })
 
 def edit_user_profile(request, username):
     if request.user.is_authenticated():
@@ -162,34 +174,15 @@ def edit_user_profile(request, username):
                 return HttpResponseRedirect('/members/' + member.user.username + '/')
 
             layout = get_layout(member)
-            return render(request, 'edit-user-profile.html', {
-                'form': form,
-                'member': member,
-                'like_notifs': layout['like_notifs'],
-                'comment_notifs': layout['comment_notifs'],
-                'follow_notifs': layout['follow_notifs'],
-                'mozakhraf_notifs': layout['mozakhraf_notifs'],
-                'notif_num': layout['notif_num'],
-                'recmovies': layout['recmovies'],
-                'recusers': layout['recusers']
-            })
+            return jamile(request, form, memeber, layout)
+
         else:
             if member.user.username != username:
                 return HttpResponseRedirect('/members/' + member.user.username + '/edit/')
 
             form = EditProfileForm(member=member)
             layout = get_layout(member)
-            return render(request, 'edit-user-profile.html', {
-                'form': form,
-                'member': member,
-                'like_notifs': layout['like_notifs'],
-                'comment_notifs': layout['comment_notifs'],
-                'follow_notifs': layout['follow_notifs'],
-                'mozakhraf_notifs': layout['mozakhraf_notifs'],
-                'notif_num': layout['notif_num'],
-                'recmovies': layout['recmovies'],
-                'recusers': layout['recusers']
-            })
+            return jamile(request, form, memeber, layout)
     else:
         login_form = MemberLoginForm()
         reg_form = MemberRegModelForm()
@@ -302,17 +295,7 @@ def get_single_post(request, post_id):
 
         layout = get_layout(member)
 
-        return render(request, 'view-single-post.html', {
-            'template_post': template_post,
-            'member': member,
-            'like_notifs': layout['like_notifs'],
-            'comment_notifs': layout['comment_notifs'],
-            'follow_notifs': layout['follow_notifs'],
-            'mozakhraf_notifs': layout['mozakhraf_notifs'],
-            'notif_num': layout['notif_num'],
-            'recmovies': layout['recmovies'],
-            'recusers': layout['recusers']
-        })
+        return jamile(request, form, memeber, layout)
     else:
         login_form = MemberLoginForm()
         reg_form = MemberRegModelForm()
