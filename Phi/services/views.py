@@ -29,7 +29,7 @@ def home(request):
 	if request.user.is_authenticated():
 		member = Member.objects.get(user=request.user)
 		followees = member.followees.all()
-		
+
 		posts = []
 		for followee in followees:
 			posts += models.Post.objects.filter(member=followee)
@@ -71,7 +71,7 @@ def get_user_profile(request, username):
 
 		# uni ke mikhad bebine
 		member_to_visit = Member.objects.filter(user__username=username)[0]
- 
+
 		if request.GET:
 			notif_id = request.GET['notifID']
 			notif = models.Notification.objects.get(id=notif_id)
@@ -87,7 +87,7 @@ def get_user_profile(request, username):
 			this_is_me = True
 		else:
 			this_is_me = False
-		
+
 		# post haaye member_to_visit
 		posts = list(models.Post.objects.filter(member=member_to_visit).order_by('-datetime'))
 
@@ -98,7 +98,7 @@ def get_user_profile(request, username):
 		num_of_followers = len(member_to_visit.member_set.all())
 		num_of_followees = len(member_to_visit.followees.all())
 
-		layout = get_layout(member)		
+		layout = get_layout(member)
 
 		return render(request, 'view-user-profile.html', {
 				'template_posts': template_posts[:20],
@@ -132,20 +132,15 @@ def edit_user_profile(request, username):
 			form = EditProfileForm(member, request.POST, request.FILES)
 			if form.is_valid():
 				first_name = form.cleaned_data['first_name']
-				if first_name!='':
-					member.user.first_name = first_name
+                                member.user.first_name = first_name
 				last_name = form.cleaned_data['last_name']
-				if last_name!='':
-					member.user.last_name = last_name
+                                member.user.last_name = last_name
 				displayed_name = form.cleaned_data['displayed_name']
-				if displayed_name!='':
-					member.displayed_name = displayed_name
+                                member.displayed_name = displayed_name
 				bio = form.cleaned_data['bio']
-				if bio!='':
-					member.bio = bio
+                                member.bio = bio
 				birthday = form.cleaned_data['birthday']
-				if birthday is not None:
-					member.birthday = birthday
+                                member.birthday = birthday
 				password = form.cleaned_data['password']
 				if password!='':
 					member.user.set_password(password)
@@ -156,7 +151,7 @@ def edit_user_profile(request, username):
 					member.prof_image = request.FILES['prof_image']
 				member.save()
 				return HttpResponseRedirect('/members/' + member.user.username + '/')
-			
+
 			layout = get_layout(member)
 			return render(request, 'edit-user-profile.html', {
 					'form': form,
@@ -225,7 +220,7 @@ def follow_unfollow(request, username):
 def get_followees(request, username):
 	if request.user.is_authenticated():
 		member = Member.objects.get(user=request.user)
-		
+
 		following = Member.objects.filter(user__username=username)[0].followees.all()
 		followers = Member.objects.filter(user__username=username)[0].member_set.all()
 
@@ -254,7 +249,7 @@ def get_followees(request, username):
 def get_followers(request, username):
 	if request.user.is_authenticated():
 		member = Member.objects.get(user=request.user)
-		
+
 		followers = Member.objects.filter(user__username=username)[0].member_set.all()
 		following = Member.objects.filter(user__username=username)[0].followees.all()
 
@@ -289,7 +284,7 @@ def get_single_post(request, post_id):
 			notif = models.Notification.objects.get(id=notif_id)
 			notif.seen = True
 			notif.save()
-		
+
 		post = models.Post.objects.get(id=post_id)
 
 		template_post = TemplatePost(post, member)
@@ -349,7 +344,7 @@ def like_unlike(request, post_id):
 def comment(request, post_id):
 	if request.user.is_authenticated():
 		member = Member.objects.get(user=request.user)
-		if request.method == "GET":	
+		if request.method == "GET":
 			comment_text = request.GET.get('comment_text')
 			post_id = request.GET.get('post-id')
 
@@ -360,7 +355,7 @@ def comment(request, post_id):
 			postcomment.member = member
 			postcomment.post = models.Post.objects.filter(id=post_id)[0]
 			postcomment.comment_text = comment_text
-			postcomment.datetime = datetime.datetime.now()		
+			postcomment.datetime = datetime.datetime.now()
 			postcomment.save()
 
 			new_notif = models.PostRelatedNotif()
@@ -401,7 +396,7 @@ def get_movie_profile(request, movie_id):
 		for role in available_roles:
 			roles += [role]
 
-		layout = get_layout(member)		
+		layout = get_layout(member)
 
 		return render(request, 'view-movie-profile.html', {
 				'movie': movie,
