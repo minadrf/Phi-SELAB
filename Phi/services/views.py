@@ -26,6 +26,20 @@ class TemplatePost():
         self.comments = list(models.Comment.objects.filter(post=post).order_by('datetime'))
 
 
+def mina(request, template_posts, member, layout):
+    return render(request, 'view-timeline.html', {
+        'template_posts': template_posts,
+        'member': member,
+        'like_notifs': layout['like_notifs'],
+        'comment_notifs': layout['comment_notifs'],
+        'follow_notifs': layout['follow_notifs'],
+        'mozakhraf_notifs': layout['mozakhraf_notifs'],
+        'notif_num': layout['notif_num'],
+        'recmovies': layout['recmovies'],
+        'recusers': layout['recusers']
+    })
+
+
 def home(request):
     if request.user.is_authenticated():
         member = Member.objects.get(user=request.user)
@@ -43,17 +57,8 @@ def home(request):
 
         layout = get_layout(member)
 
-        return render(request, 'view-timeline.html', {
-            'template_posts': template_posts,
-            'member': member,
-            'like_notifs': layout['like_notifs'],
-            'comment_notifs': layout['comment_notifs'],
-            'follow_notifs': layout['follow_notifs'],
-            'mozakhraf_notifs': layout['mozakhraf_notifs'],
-            'notif_num': layout['notif_num'],
-            'recmovies': layout['recmovies'],
-            'recusers': layout['recusers']
-        })
+        return mina(request, template_posts, member, layout)
+
     else:
         login_form = MemberLoginForm()
         reg_form = MemberRegModelForm()
@@ -133,17 +138,8 @@ def get_user_profile(request, username):
         })
 
 def jamile(request, form, memeber, layout):
-    render(request, 'edit-user-profile.html', {
-        'form': form,
-        'member': member,
-        'like_notifs': layout['like_notifs'],
-        'comment_notifs': layout['comment_notifs'],
-        'follow_notifs': layout['follow_notifs'],
-        'mozakhraf_notifs': layout['mozakhraf_notifs'],
-        'notif_num': layout['notif_num'],
-        'recmovies': layout['recmovies'],
-        'recusers': layout['recusers']
-    })
+    return mina(request, template_posts, member, layout)
+
 
 def edit_user_profile(request, username):
     if request.user.is_authenticated():
